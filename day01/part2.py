@@ -8,7 +8,7 @@ INPUT_TXT = os.path.join(os.path.dirname(__file__), "input.txt")
 
 def compute(s: str) -> int:
     elves = s.split("\n\n")
-    return max(sum(int(calories) for calories in elf.splitlines()) for elf in elves)
+    return sum(sorted((sum(int(calories) for calories in elf.splitlines()) for elf in elves), reverse=True)[:3])
 
 
 def main() -> int:
