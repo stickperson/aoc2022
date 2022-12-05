@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import argparse
+from collections import deque
 import os.path
 
 import pytest
@@ -15,18 +16,16 @@ def compute(s: str) -> str:
     crates, instructions = s.split("\n\n")
     crates = crates.splitlines()[:-1]
     for idx in range(0, len(crates[0]), 4):
-        stacks.append([])
+        stacks.append(deque())
+
     for crate_row in crates:
         for idx in range(0, len(crate_row), 4):
             stack_number = idx // 4
             crate = crate_row[idx:idx + 4]
             crate = crate.strip()
             if crate:
-                stacks[stack_number].append(crate)
-    temp_stacks = []
-    for stack in stacks:
-        temp_stacks.append(stack[::-1])
-    stacks = temp_stacks
+                stacks[stack_number].appendleft(crate)
+
     for instruction in instructions.splitlines():
         parts = instruction.split()
         amount = int(parts[1])
