@@ -11,15 +11,15 @@ INPUT_TXT = os.path.join(os.path.dirname(__file__), "input.txt")
 
 
 class Directory:
-    def __init__(self, name: str, parent=None):
+    def __init__(self, name: str, parent: Directory | None = None) -> None:
         self.name = name
         self.parent = parent
-        self.files = []
-        self.subdirectories = {}
+        self.files: list[int] = []
+        self.subdirectories: dict[str, Directory] = {}
         self._size = 0
 
     @property
-    def size(self):
+    def size(self) -> int:
         if self._size:
             return self._size
         _size = sum(self.files)
@@ -41,6 +41,7 @@ def compute(s: str) -> int:
                     while current_dir.parent:
                         current_dir = current_dir.parent
                 elif cd_dir == "..":
+                    assert current_dir.parent is not None
                     current_dir = current_dir.parent
                 else:
                     current_dir = current_dir.subdirectories[cd_dir]
