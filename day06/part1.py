@@ -16,6 +16,7 @@ def compute(s: str) -> int:
         unique = len(set(s[idx-unique_chars:idx]))
         if unique == unique_chars:
             return idx
+    raise ValueError()
 
 
 INPUT_S = '''\
