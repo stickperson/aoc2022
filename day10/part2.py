@@ -15,9 +15,9 @@ def compute(s: str) -> list[str]:
     crt_position = 0
 
     instructions = s.splitlines()
-    matrix: list[str] = []
+    matrix: list[list[str]] = []
     for _ in range(6):
-        matrix.append("." * 40)
+        matrix.append([" " for _ in range(40)])
 
     for inst in instructions:
         val = 0
@@ -28,24 +28,23 @@ def compute(s: str) -> list[str]:
             val = int(inst.split()[1])
 
         for _ in range(cycles_to_add):
-            # There;s some off by 1 error here
-            row = (crt_position) // 40
-            col = (crt_position) % 40
-            mark = "."
-            if abs((x_register % 40) - col) <= 1:
-                mark = "#"
-            x = list(matrix[row])
-            x[col] = mark
-            matrix[row] = "".join(x)
+            row = crt_position // 40
+            col = crt_position % 40
+            if abs(x_register - col) <= 1:
+                matrix[row][col] = "#"
             crt_position += 1
+
         x_register += val
-        x_register = x_register % 40
+        # Instructions were a little unclear how to handle the case where the sprite would flow to the next row.
+        # If sprite goes outside, don't take the modulo because that could make it "wrao" around to the other side.
+        if x_register >= 0 and x_register < 40:
+            x_register = x_register % 40
 
     output = []
     for m in matrix:
         output.append("".join(m))
-    print("\n".join(matrix))
-    return matrix
+    print("\n".join(output))
+    return output
 
 
 INPUT_S = '''\
