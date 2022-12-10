@@ -16,6 +16,8 @@ def compute(s: str) -> int:
     lines = s.splitlines()
     rows = len(lines)
     cols = len(lines[0])
+
+    # Edges have a viewing distance of 0 so skip
     for row_idx in range(1, len(lines[0]) - 1):
         for col_idx in range(1, len(lines) - 1):
             row = lines[row_idx]
